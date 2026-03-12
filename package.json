@@ -1,0 +1,22 @@
+{
+  "name": "koinara-base",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck:scripts": "tsc -p tsconfig.scripts.json --noEmit",
+    "doctor:testnet": "tsx deploy/doctor.ts --profile testnet",
+    "doctor:mainnet": "tsx deploy/doctor.ts --profile mainnet",
+    "deploy:v2:testnet": "tsx deploy/deploy-v2.ts --profile testnet",
+    "deploy:v2:mainnet": "tsx deploy/deploy-v2.ts --profile mainnet",
+    "verify:v2:testnet": "tsx deploy/verify-v2.ts --profile testnet",
+    "verify:v2:mainnet": "tsx deploy/verify-v2.ts --profile mainnet",
+    "canary:v2:testnet": "tsx deploy/canary.ts --profile testnet",
+    "canary:v2:mainnet": "tsx deploy/canary.ts --profile mainnet"
+  },
+  "devDependencies": {
+    "dotenv": "^16.6.1",
+    "ethers": "^6.15.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.2"
+  }
+}

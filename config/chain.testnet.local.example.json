@@ -1,0 +1,13 @@
+{
+  "chainId": 84532,
+  "rpcUrl": "https://your-base-sepolia-rpc.example",
+  "backupRpcUrls": [
+    "https://your-second-base-sepolia-rpc.example"
+  ],
+  "explorerBaseUrl": "https://sepolia-explorer.base.org/",
+  "confirmationsRequired": 2,
+  "nativeToken": {
+    "type": "native",
+    "symbol": "ETH"
+  }
+}

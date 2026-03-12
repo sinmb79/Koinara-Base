@@ -1,0 +1,13 @@
+{
+  "chainId": 8453,
+  "rpcUrl": "https://your-base-mainnet-rpc.example",
+  "backupRpcUrls": [
+    "https://your-second-base-mainnet-rpc.example"
+  ],
+  "explorerBaseUrl": "https://base.blockscout.com/",
+  "confirmationsRequired": 3,
+  "nativeToken": {
+    "type": "native",
+    "symbol": "ETH"
+  }
+}

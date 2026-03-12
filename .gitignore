@@ -1,0 +1,7 @@
+node_modules/
+out/
+cache/
+config/*.local.json
+deployments/*.local.json
+deployments/base-*.json
+!deployments/.gitkeep
