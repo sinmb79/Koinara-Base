@@ -1,0 +1,35 @@
+{
+  "contractAddresses": {
+    "registry": "0xa5C8d1f5008f056e37548bB22D5C8d4708f0D87E",
+    "verifier": "0x48E0a3ed870768Fa0e0C3532235d382E8B5f75d4",
+    "token": "0xd5B93084a6C2263C52ed0C8096CB6bC235E726b5",
+    "nodeRegistry": "0xaEeF8F6D82C1a51223aAAD89de30a107b54FFce0",
+    "rewardDistributor": "0x957a5a7D80b08113fab70dAc8c68e8D6d87bb3D1"
+  },
+  "deployTxHashes": {
+    "registry": "0xbb2dd782d6ac062d760cac5935fb9de1639ee6a417b0c43c2bd41deda44cd7cc",
+    "verifier": "0x673d1d41d88d6803fc87127c2afff53f6006bd6125a1f0d88708582dff8f74b7",
+    "token": "0x37a546fa267c4da3ec5ff11b61a310ba41932a40e751905b896c312b971e1fbe",
+    "nodeRegistry": "0xbad987e20f3b6628ae0593ad9d6eeaab11aca4c8327fea33e86267200ea9cc21",
+    "rewardDistributor": "0xed8411d6d9cce7cb2778a1a7f243488c75db131f1275e01af03f68de872b7bdd"
+  },
+  "blockNumbers": {
+    "registry": 43284720,
+    "verifier": 43284725,
+    "token": 43284731,
+    "nodeRegistry": 43284736,
+    "rewardDistributor": 43284742
+  },
+  "chainId": 8453,
+  "deployer": "0xf95232Ae6a716862799C90239028fb590C9bB307",
+  "rpcUrlUsed": "https://mainnet.base.org",
+  "epochParams": {
+    "genesisTimestamp": 1773358783,
+    "epochDuration": 86400,
+    "halvingInterval": 365,
+    "initialEpochEmission": "1000000000000000000000",
+    "activePoolBps": 2000
+  },
+  "tokenCap": "2100000000000000000000000000",
+  "gitRef": "v0.1.6-v2"
+}

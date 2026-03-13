@@ -69,6 +69,34 @@ async function assertEqual<T>(label: string, actual: T, expected: T): Promise<vo
   console.log(`ok ${label}`);
 }
 
+async function readWithRetry<T>(
+  label: string,
+  reader: () => Promise<T>,
+  attempts = 4,
+  delayMs = 1200
+): Promise<T> {
+  let lastError: unknown;
+
+  for (let attempt = 1; attempt <= attempts; attempt += 1) {
+    try {
+      return await reader();
+    } catch (error) {
+      lastError = error;
+      if (attempt === attempts) {
+        break;
+      }
+      console.warn(
+        `retry ${label} (${attempt}/${attempts}) after call failure: ${
+          error instanceof Error ? error.message : String(error)
+        }`
+      );
+      await new Promise((resolveTimer) => setTimeout(resolveTimer, delayMs));
+    }
+  }
+
+  throw lastError instanceof Error ? lastError : new Error(String(lastError));
+}
+
 async function main(): Promise<void> {
   const profile = getProfileFromArgv();
   const chain = loadChainConfig(profile);
@@ -92,55 +120,71 @@ async function main(): Promise<void> {
     provider
   );
 
-  await assertEqual("registry.verifier", await registry.verifier(), manifest.contractAddresses.verifier);
+  await assertEqual(
+    "registry.verifier",
+    await readWithRetry("registry.verifier", () => registry.verifier()),
+    manifest.contractAddresses.verifier
+  );
   await assertEqual(
     "registry.rewardDistributor",
-    await registry.rewardDistributor(),
+    await readWithRetry("registry.rewardDistributor", () => registry.rewardDistributor()),
     manifest.contractAddresses.rewardDistributor
   );
-  await assertEqual("token.minter", await token.minter(), manifest.contractAddresses.rewardDistributor);
+  await assertEqual(
+    "token.minter",
+    await readWithRetry("token.minter", () => token.minter()),
+    manifest.contractAddresses.rewardDistributor
+  );
   await assertEqual(
     "nodeRegistry.rewardDistributor",
-    await nodeRegistry.rewardDistributor(),
+    await readWithRetry("nodeRegistry.rewardDistributor", () => nodeRegistry.rewardDistributor()),
     manifest.contractAddresses.rewardDistributor
   );
-  await assertEqual("registry.admin", await registry.admin(), ethers.ZeroAddress);
-  await assertEqual("token.admin", await token.admin(), ethers.ZeroAddress);
-  await assertEqual("nodeRegistry.admin", await nodeRegistry.admin(), ethers.ZeroAddress);
-  await assertEqual("token.cap", (await token.cap()).toString(), params.expectedTokenCap);
+  await assertEqual("registry.admin", await readWithRetry("registry.admin", () => registry.admin()), ethers.ZeroAddress);
+  await assertEqual("token.admin", await readWithRetry("token.admin", () => token.admin()), ethers.ZeroAddress);
+  await assertEqual(
+    "nodeRegistry.admin",
+    await readWithRetry("nodeRegistry.admin", () => nodeRegistry.admin()),
+    ethers.ZeroAddress
+  );
+  await assertEqual(
+    "token.cap",
+    (await readWithRetry("token.cap", () => token.cap())).toString(),
+    params.expectedTokenCap
+  );
   await assertEqual(
     "nodeRegistry.epochDuration",
-    (await nodeRegistry.epochDuration()).toString(),
+    (await readWithRetry("nodeRegistry.epochDuration", () => nodeRegistry.epochDuration())).toString(),
     String(params.epochDuration)
   );
   await assertEqual(
     "epochDuration",
-    (await distributor.epochDuration()).toString(),
+    (await readWithRetry("epochDuration", () => distributor.epochDuration())).toString(),
     String(params.epochDuration)
   );
   await assertEqual(
     "halvingInterval",
-    (await distributor.halvingInterval()).toString(),
+    (await readWithRetry("halvingInterval", () => distributor.halvingInterval())).toString(),
     String(params.halvingInterval)
   );
   await assertEqual(
     "initialEpochEmission",
-    (await distributor.initialEpochEmission()).toString(),
+    (await readWithRetry("initialEpochEmission", () => distributor.initialEpochEmission())).toString(),
     params.initialEpochEmission
   );
   await assertEqual(
     "activePoolBps",
-    (await distributor.activePoolBps()).toString(),
+    (await readWithRetry("activePoolBps", () => distributor.activePoolBps())).toString(),
     String(manifest.epochParams.activePoolBps)
   );
   await assertEqual(
     "manifest.genesisTimestamp",
-    (await distributor.genesisTimestamp()).toString(),
+    (await readWithRetry("manifest.genesisTimestamp", () => distributor.genesisTimestamp())).toString(),
     String(manifest.epochParams.genesisTimestamp)
   );
   await assertEqual(
     "nodeRegistry.genesisTimestamp",
-    (await nodeRegistry.genesisTimestamp()).toString(),
+    (await readWithRetry("nodeRegistry.genesisTimestamp", () => nodeRegistry.genesisTimestamp())).toString(),
     String(manifest.epochParams.genesisTimestamp)
   );
   await assertEqual("manifest.chainId", String(manifest.chainId), String(chain.chainId));

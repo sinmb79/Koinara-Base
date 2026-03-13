@@ -75,7 +75,7 @@ async function main(): Promise<void> {
   const deploymentSuffix = readDeploymentSuffix();
   const manifestPath = resolve(ROOT, "deployments", `base-${profile}${deploymentSuffix}.json`);
   const deploymentManifest = loadJson<DeploymentManifest>(manifestPath);
-  const networkRoot = resolve(ROOT, process.env.CANARY_ROOT?.trim() || defaultCanaryRoot());
+  const networkRoot = resolve(ROOT, process.env.CANARY_ROOT?.trim() || defaultCanaryRoot(profile));
   const premiumWei = process.env.CANARY_PREMIUM_WEI?.trim() || "0";
   const deadlineSeconds = Number(process.env.CANARY_DEADLINE_SECONDS?.trim() || "86400");
 
@@ -148,9 +148,11 @@ function readDeploymentSuffix(): string {
   return suffix.startsWith("-") ? suffix : `-${suffix}`;
 }
 
-function defaultCanaryRoot(): string {
+function defaultCanaryRoot(profile: string): string {
   const suffix = readDeploymentSuffix();
-  return suffix === "-v2" ? ".koinara-base-v2/network" : ".koinara-base/network";
+  return suffix === "-v2"
+    ? `.koinara-base-v2/${profile}/network`
+    : `.koinara-base/${profile}/network`;
 }
 
 function loadCreatorKey(): { privateKey: string; source: "creator" | "deployer" } {

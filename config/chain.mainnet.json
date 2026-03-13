@@ -1,7 +1,9 @@
 {
   "chainId": 8453,
-  "rpcUrl": "https://mainnet.base.org",
-  "backupRpcUrls": [],
+  "rpcUrl": "https://base-rpc.publicnode.com",
+  "backupRpcUrls": [
+    "https://mainnet.base.org"
+  ],
   "explorerBaseUrl": "https://base.blockscout.com/",
   "confirmationsRequired": 3,
   "nativeToken": {
