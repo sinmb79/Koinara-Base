@@ -21,8 +21,6 @@
     "rewardDistributor": 38794558
   },
   "chainId": 84532,
-  "deployer": "0xf95232Ae6a716862799C90239028fb590C9bB307",
-  "rpcUrlUsed": "https://sepolia.base.org",
   "epochParams": {
     "genesisTimestamp": 1773357373,
     "epochDuration": 86400,

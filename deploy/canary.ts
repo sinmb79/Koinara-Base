@@ -155,20 +155,9 @@ function defaultCanaryRoot(profile: string): string {
     : `.koinara-base/${profile}/network`;
 }
 
-function loadCreatorKey(): { privateKey: string; source: "creator" | "deployer" } {
-  const creatorKey = process.env.CREATOR_PRIVATE_KEY?.trim();
-  if (creatorKey) {
-    return { privateKey: creatorKey, source: "creator" };
-  }
-
-  const creatorKeyFile = process.env.CREATOR_PRIVATE_KEY_FILE?.trim();
-  if (creatorKeyFile) {
-    const resolved = resolve(ROOT, creatorKeyFile);
-    return { privateKey: readFileSync(resolved, "utf8").trim(), source: "creator" };
-  }
-
-  const loaded = loadPrivateKeyFromEnv("PRIVATE_KEY", "PRIVATE_KEY_FILE");
-  return { privateKey: loaded.privateKey, source: "deployer" };
+function loadCreatorKey(): { privateKey: string; source: "creator" } {
+  const loaded = loadPrivateKeyFromEnv("CREATOR_PRIVATE_KEY", "CREATOR_PRIVATE_KEY_FILE");
+  return { privateKey: loaded.privateKey, source: "creator" };
 }
 
 main().catch((error: unknown) => {

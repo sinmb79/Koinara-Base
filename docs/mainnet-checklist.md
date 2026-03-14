@@ -6,7 +6,8 @@
 - confirm `forge build` succeeds
 - copy `config/chain.mainnet.local.example.json` to `config/chain.mainnet.local.json`
 - replace the placeholder RPC URLs with your actual Base Mainnet provider URLs
-- load `PRIVATE_KEY` or `PRIVATE_KEY_FILE`
+- load `PRIVATE_KEY_FILE`
+- prepare a separate `CREATOR_PRIVATE_KEY_FILE`
 - make sure the deployer wallet has enough `ETH` for deployment and verification
 
 ## Dry Run
@@ -33,6 +34,8 @@ npm run verify:v2:mainnet
 ```bash
 npm run canary:v2:mainnet
 ```
+
+Canary must use the separate creator key file. It will no longer fall back to the deployer key.
 
 ## Handoff
 

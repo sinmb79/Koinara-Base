@@ -8,3 +8,4 @@ deployments/base-*.json
 !deployments/.gitkeep
 !deployments/base-testnet-v2.json
 !deployments/base-mainnet-v2.json
+*.key

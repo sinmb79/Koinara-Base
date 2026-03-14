@@ -21,8 +21,6 @@
     "rewardDistributor": 43284742
   },
   "chainId": 8453,
-  "deployer": "0xf95232Ae6a716862799C90239028fb590C9bB307",
-  "rpcUrlUsed": "https://mainnet.base.org",
   "epochParams": {
     "genesisTimestamp": 1773358783,
     "epochDuration": 86400,

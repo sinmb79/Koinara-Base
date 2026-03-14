@@ -5,7 +5,8 @@
 - `config/chain.testnet.json` or `config/chain.mainnet.json`
 - optional local override: `config/chain.testnet.local.json` or `config/chain.mainnet.local.json`
 - `deploy/params.testnet.json` or `deploy/params.mainnet.json`
-- `PRIVATE_KEY` or `PRIVATE_KEY_FILE`
+- `PRIVATE_KEY_FILE`
+- `CREATOR_PRIVATE_KEY_FILE` for canary jobs
 
 ## Commands
 
@@ -32,11 +33,11 @@ Each manifest contains:
 - `deployTxHashes`
 - `blockNumbers`
 - `chainId`
-- `deployer`
-- `rpcUrlUsed`
 - `epochParams`
 - `tokenCap`
 - `gitRef`
+
+Sensitive operator details such as the deployer address, raw private-key source, and the exact RPC endpoint are intentionally excluded from the committed manifest.
 
 ## Node Handoff
 
