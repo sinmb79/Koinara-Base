@@ -68,10 +68,12 @@ export function resolveChainConfigPath(profile: Profile): string {
 export function loadChainConfig(profile: Profile): ChainConfig {
   const config = loadJson<ChainConfig>(resolveChainConfigPath(profile));
   const chainIdOverride = readIntegerEnv("CHAIN_ID") ?? readIntegerEnv("BASE_CHAIN_ID");
+  const confirmOverride = readIntegerEnv("CONFIRMATIONS_REQUIRED");
 
   return {
     ...config,
-    chainId: chainIdOverride ?? config.chainId
+    chainId: chainIdOverride ?? config.chainId,
+    confirmationsRequired: confirmOverride ?? config.confirmationsRequired
   };
 }
 
@@ -102,6 +104,24 @@ export function getRpcCandidates(chain: ChainConfig): string[] {
   return [...new Set(candidates)];
 }
 
+/**
+ * Build a FetchRequest with optional authentication header.
+ *
+ * Set `RPC_AUTH_HEADER` to pass a Bearer token (or any value) as the
+ * Authorization header for private RPC endpoints (Alchemy, Infura, etc.).
+ *
+ * Example:
+ *   RPC_AUTH_HEADER="Bearer abc123"
+ */
+export function buildRpcFetchRequest(url: string): ethers.FetchRequest {
+  const req = new ethers.FetchRequest(url);
+  const authHeader = process.env.RPC_AUTH_HEADER?.trim();
+  if (authHeader) {
+    req.setHeader("Authorization", authHeader);
+  }
+  return req;
+}
+
 export async function resolveHealthyRpcUrl(candidates: string[], expectedChainId = 0): Promise<string> {
   if (candidates.length === 0) {
     throw new Error("No RPC candidates configured");
@@ -110,7 +130,8 @@ export async function resolveHealthyRpcUrl(candidates: string[], expectedChainId
   let lastError = "No RPC tried";
   for (const rpcUrl of candidates) {
     try {
-      const provider = new ethers.JsonRpcProvider(rpcUrl, expectedChainId || undefined);
+      const fetchReq = buildRpcFetchRequest(rpcUrl);
+      const provider = new ethers.JsonRpcProvider(fetchReq, expectedChainId || undefined);
       const network = await provider.getNetwork();
       if (expectedChainId && Number(network.chainId) !== expectedChainId) {
         throw new Error(`wrong chainId ${network.chainId}`);

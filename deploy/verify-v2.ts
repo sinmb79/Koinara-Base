@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import "dotenv/config";
 import {
   ROOT,
+  buildRpcFetchRequest,
   getProfileFromArgv,
   getRpcCandidates,
   loadChainConfig,
@@ -106,7 +107,8 @@ async function main(): Promise<void> {
   );
 
   const rpcUrl = await resolveHealthyRpcUrl(getRpcCandidates(chain), chain.chainId);
-  const provider = new ethers.JsonRpcProvider(rpcUrl, chain.chainId || undefined);
+  const fetchReq = buildRpcFetchRequest(rpcUrl);
+  const provider = new ethers.JsonRpcProvider(fetchReq, chain.chainId || undefined);
   const registry = new ethers.Contract(manifest.contractAddresses.registry, registryAbi, provider);
   const token = new ethers.Contract(manifest.contractAddresses.token, tokenAbi, provider);
   const nodeRegistry = new ethers.Contract(

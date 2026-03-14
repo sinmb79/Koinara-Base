@@ -5,6 +5,7 @@ import { ethers } from "ethers";
 import "dotenv/config";
 import {
   ROOT,
+  buildRpcFetchRequest,
   ensureFoundryBuild,
   getProfileFromArgv,
   getRpcCandidates,
@@ -103,7 +104,8 @@ async function main(): Promise<void> {
 
   const activePoolBps = readActivePoolBps();
   const rpcUrl = await resolveHealthyRpcUrl(getRpcCandidates(chain), chain.chainId);
-  const provider = new ethers.JsonRpcProvider(rpcUrl, chain.chainId || undefined);
+  const fetchReq = buildRpcFetchRequest(rpcUrl);
+  const provider = new ethers.JsonRpcProvider(fetchReq, chain.chainId || undefined);
   const deployerWallet = new ethers.Wallet(privateKey, provider);
   const deployer = new ethers.NonceManager(deployerWallet);
   const txOverrides = loadTxOverridesFromEnv();

@@ -1,8 +1,9 @@
 {
   "chainId": 8453,
-  "rpcUrl": "https://your-base-mainnet-rpc.example",
+  "rpcUrl": "https://base-mainnet.g.alchemy.com/v2/YOUR_ALCHEMY_API_KEY",
   "backupRpcUrls": [
-    "https://your-second-base-mainnet-rpc.example"
+    "https://base-mainnet.infura.io/v3/YOUR_INFURA_PROJECT_ID",
+    "https://base-rpc.publicnode.com"
   ],
   "explorerBaseUrl": "https://base.blockscout.com/",
   "confirmationsRequired": 3,

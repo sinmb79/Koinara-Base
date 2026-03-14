@@ -5,6 +5,7 @@ import process from "node:process";
 import "dotenv/config";
 import {
   ROOT,
+  buildRpcFetchRequest,
   getProfileFromArgv,
   getRpcCandidates,
   loadChainConfig,
@@ -70,7 +71,8 @@ async function main(): Promise<void> {
   const rpcUrl = await resolveHealthyRpcUrl(getRpcCandidates(chain), chain.chainId);
   const { privateKey, source } = loadCreatorKey();
   const txOverrides = loadTxOverridesFromEnv();
-  const provider = new ethers.JsonRpcProvider(rpcUrl, chain.chainId || undefined);
+  const fetchReq = buildRpcFetchRequest(rpcUrl);
+  const provider = new ethers.JsonRpcProvider(fetchReq, chain.chainId || undefined);
   const wallet = new ethers.Wallet(privateKey, provider);
   const deploymentSuffix = readDeploymentSuffix();
   const manifestPath = resolve(ROOT, "deployments", `base-${profile}${deploymentSuffix}.json`);
